@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RV Infrastructure Platform – Investor Deck</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+    
+    :root {
+      --bg: #0b1020;
+      --bg2: #111831;
+      --panel: rgba(255,255,255,0.06);
+      --panel-strong: rgba(255,255,255,0.1);
+      --text: #f3f6ff;
+      --muted: #a8b2d1;
+      --line: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;
+      --accent2: #a78bfa;
+      --good: #86efac;
+      --warn: #fde68a;
+      --red: #fca5a5;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: radial-gradient(circle at top left, #152145 0%, var(--bg) 45%, #060914 100%); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    body { padding: 28px; }
+    .deck { max-width: 1460px; margin: 0 auto; display: grid; gap: 26px; }
+    .slide {
+      min-height: 820px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
+        linear-gradient(135deg, rgba(125,211,252,.08), rgba(167,139,250,.06) 50%, rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      padding: 34px 38px 30px 38px;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(125,211,252,.18), transparent 68%);
+      pointer-events: none;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: -90px auto auto -70px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(167,139,250,.16), transparent 70%);
+      pointer-events: none;
+    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 26px; position: relative; z-index: 2; flex-shrink: 0; }
+    .kicker { display:inline-flex; align-items:center; gap:10px; padding: 9px 14px; border:1px solid var(--line); border-radius:999px; background: rgba(255,255,255,.04); color: var(--muted); font-size: 14px; letter-spacing: .02em; }
+    .kicker b { color: var(--text); font-weight: 650; }
+    .page { color: var(--muted); font-size: 14px; }
+    h1, h2, h3, p { margin: 0; position: relative; z-index: 2; flex-shrink: 0; }
+    h1 { font-size: 68px; line-height: .95; letter-spacing: -0.04em; max-width: 920px; }
+    h2 { font-size: 46px; line-height: 1.05; letter-spacing: -0.03em; max-width: 1150px; }
+    .subtitle { font-size: 22px; line-height: 1.35; color: #d8def7; max-width: 980px; margin-top: 18px; }
+    .muted { color: var(--muted); }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 24px; margin-top: 34px; position: relative; z-index: 2; flex-shrink: 0; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; backdrop-filter: blur(8px); }
+    .panel.strong { background: var(--panel-strong); }
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+    .metric { padding: 20px; border-radius: 20px; background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+    .metric .num { font-size: 42px; font-weight: 750; letter-spacing: -0.04em; }
+    .metric .lbl { color: var(--muted); margin-top: 4px; font-size: 14px; line-height: 1.35; }
+    .bullet { display: grid; gap: 14px; margin-top: 18px; }
+    .bullet .item { display: grid; grid-template-columns: 14px 1fr; gap: 12px; align-items: start; }
+    .dot { width: 14px; height: 14px; border-radius: 999px; margin-top: 5px; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 0 18px rgba(125,211,252,.45); }
+    .item p { font-size: 20px; line-height: 1.35; }
+    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px; position: relative; z-index: 2; flex-shrink: 0; }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 22px; position: relative; z-index: 2; flex-shrink: 0; }
+    .card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .small { font-size: 15px; line-height: 1.45; color: var(--muted); }
+    .big-statement { font-size: 38px; line-height: 1.08; letter-spacing: -0.03em; max-width: 1080px; margin-top: 24px; flex-shrink: 0; }
+    .stack { display: grid; gap: 14px; margin-top: 14px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .chip { padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); font-size: 15px; color: #dfe6ff; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: stretch; margin-top: 26px; position: relative; z-index: 2; flex-shrink: 0; }
+    .flow .step { padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.05); min-height: 165px; position: relative; }
+    .flow .step:after { content: "\2192"; position: absolute; right: -11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 24px; }
+    .flow .step:last-child:after { display: none; }
+    .step .n { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+    .step h3 { font-size: 22px; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .bars { display: grid; gap: 16px; margin-top: 20px; }
+    .bar { display: grid; gap: 8px; }
+    .bar-top { display:flex; justify-content:space-between; gap:14px; font-size:15px; color:#dfe6ff; }
+    .track { width:100%; height:14px; background: rgba(255,255,255,.07); border-radius:999px; overflow:hidden; border:1px solid var(--line); }
+    .fill { height:100%; border-radius:999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .fill.good { background: linear-gradient(90deg, #34d399, #a3e635); }
+    .fill.resilient { background: linear-gradient(90deg, #34d399, #7dd3fc); }
+    .spectrum-divider { display:flex; align-items:center; gap:12px; margin:6px 0 2px 0; }
+    .spectrum-divider::before, .spectrum-divider::after { content:""; flex:1; height:1px; border-top:1px dashed rgba(255,255,255,.18); }
+    .spectrum-divider span { font-size:11px; color:var(--good); letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; font-weight:600; }
+    .fill.warn { background: linear-gradient(90deg, #fbbf24, #fb7185); }
+    .quote { font-size: 34px; line-height: 1.15; letter-spacing: -0.03em; }
+    .quote small { display:block; margin-top:14px; color: var(--muted); font-size: 16px; letter-spacing: 0; }
+    .footer-note { position:relative; margin-top:auto; padding-top:22px; font-size:12px; line-height:1.5; color:#9ca7cb; z-index:2; }
+    .diagram { margin-top: 26px; display:grid; grid-template-columns: 1.15fr .85fr; gap: 18px; position: relative; z-index: 2; flex-shrink: 0; }
+    .core {
+      min-height: 350px;
+      height: 100%;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: radial-gradient(circle at center, rgba(125,211,252,.16), rgba(255,255,255,.03) 35%, rgba(255,255,255,.02) 70%);
+      position: relative;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .core-center {
+      width: 290px; height: 290px; border-radius: 50%;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:24px;
+      background: linear-gradient(180deg, rgba(125,211,252,.22), rgba(167,139,250,.12));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 0 80px rgba(125,211,252,.18);
+    }
+    .core-center .title { font-size: 30px; line-height:1; font-weight:750; letter-spacing:-0.03em; }
+    .orbit { position:absolute; padding:12px 16px; background: rgba(8,12,25,.88); border:1px solid var(--line); border-radius: 16px; font-size:15px; }
+    .o1{ top:26px; left:60px;} .o2{ top:46px; right:52px;} .o3{ bottom:56px; left:40px;} .o4{ bottom:36px; right:44px;} .o5{ top:50%; left:18px; transform: translateY(-50%);} .o6{ top:50%; right:18px; transform: translateY(-50%);}
+    .lines svg { position:absolute; inset:0; width:100%; height:100%; }
+    .lines path { stroke: rgba(255,255,255,.18); stroke-width:2; fill:none; stroke-dasharray: 7 7; }
+    table { width:100%; border-collapse: collapse; margin-top: 14px; }
+    th, td { text-align:left; padding: 14px 12px; border-bottom: 1px solid var(--line); font-size: 15px; }
+    th { color: var(--muted); font-weight: 600; }
+    .green { color: var(--good); }
+    .yellow { color: var(--warn); }
+    .red { color: var(--red); }
+    .tag { display:inline-flex; padding:7px 10px; border-radius:999px; background: rgba(134,239,172,.08); border:1px solid rgba(134,239,172,.25); color: #dfffe8; font-size: 13px; }
+    .center { display:flex; align-items:center; justify-content:center; }
+    .rightbox { display:grid; gap:14px; }
+    .timeline { display:grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 24px; }
+    .phase { border:1px solid var(--line); border-radius:20px; padding:18px; background: rgba(255,255,255,.04); min-height: 170px; position:relative; }
+    .phase::after { content:"\2192"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:20px; z-index:3; }
+    .phase:last-child::after { display:none; }
+    .phase .when { color: var(--accent); font-size: 13px; margin-bottom: 8px; font-weight:600; letter-spacing:.03em; }
+    .phase h3 { font-size: 22px; margin-bottom: 8px; }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; margin-top: 10px; color: var(--muted); font-size: 13px; }
+    .rainbow-layout { display:grid; grid-template-columns: 1.05fr .95fr; gap: 22px; margin-top: 26px; position: relative; z-index: 2; flex-shrink: 0; }
+    .rainbow-card { min-height: 560px; position: relative; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 120%, rgba(255,255,255,.08), rgba(255,255,255,.02) 55%, rgba(255,255,255,.015) 100%); overflow: hidden; padding-bottom: 84px; }
+    .rainbow-stage { position:absolute; inset: 22px 22px 84px 22px; display:flex; align-items:flex-end; justify-content:center; }
+    .arc {
+      position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+      border-top-left-radius: 1000px; border-top-right-radius: 1000px;
+      border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+      border: 1px solid rgba(255,255,255,.12);
+      border-bottom: none;
+      display:flex; align-items:flex-start; justify-content:center;
+      text-align:center;
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      padding: 0 20px;
+    }
+    .arc span { max-width: 360px; font-size: 15px; line-height: 1.25; color: #eef3ff; display:block; }
+    .arc small { display:block; color: var(--muted); font-size: 12px; margin-top: 6px; line-height:1.35; }
+    .arc-1 { width: 94%; height: 86%; background: linear-gradient(180deg, rgba(125,211,252,.18), rgba(125,211,252,.05)); padding-top: 12%; }
+    .arc-2 { width: 72%; height: 60%; background: linear-gradient(180deg, rgba(167,139,250,.22), rgba(167,139,250,.06)); padding-top: 8%; }
+    .arc-3 { width: 48%; height: 34%; background: linear-gradient(180deg, rgba(134,239,172,.24), rgba(134,239,172,.07)); padding-top: 5%; }
+    .rainbow-caption { position:absolute; left:22px; right:22px; bottom:18px; font-size:13px; color:var(--muted); text-align:center; line-height:1.4; }
+    .brand-grid { display:grid; gap:14px; }
+    .brand-card { padding: 18px; border-radius: 20px; background: rgba(255,255,255,.05); border:1px solid var(--line); }
+    .brand-card h3 { font-size: 20px; margin: 0 0 8px 0; }
+    .brand-card p { margin:0; font-size:15px; line-height:1.5; color:var(--muted); }
+    .status-grid { display:grid; grid-template-columns: 1.05fr .95fr; gap: 22px; margin-top: 24px; position: relative; z-index: 2; flex-shrink: 0; }
+    .status-stack { display:grid; gap:14px; }
+    .status-card { border:1px solid var(--line); border-radius: 22px; padding:18px; background: rgba(255,255,255,.05); }
+    .status-head { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:10px; }
+    .status-head h3 { margin:0; font-size:22px; }
+    .status-tag { padding:7px 10px; border-radius:999px; font-size:13px; border:1px solid var(--line); background: rgba(255,255,255,.05); color:#e8edff; white-space:nowrap; }
+    .progress-xl { height: 16px; border-radius: 999px; overflow:hidden; border:1px solid var(--line); background: rgba(255,255,255,.06); margin-top: 10px; }
+    .progress-xl > div { height:100%; border-radius:999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+    /* Strategic timeline */
+    .strategic-timeline { display:flex; flex-direction:column; gap:0; position:relative; padding-left:20px; }
+    .tl-item { display:flex; align-items:flex-start; gap:12px; position:relative; padding-bottom:14px; }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-item::before { content:""; position:absolute; left:-20px; top:10px; bottom:-4px; width:2px; background:var(--line); }
+    .tl-item:last-child::before { display:none; }
+    .tl-marker { position:absolute; left:-26px; top:3px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; line-height:1; z-index:2; }
+    .tl-item.done .tl-marker { background:var(--good); color:#0d1117; font-weight:700; font-size:11px; }
+    .tl-item.next .tl-marker { background:var(--accent); color:#0d1117; font-size:8px; }
+    .tl-item.future .tl-marker { background:transparent; border:2px solid var(--muted); color:var(--muted); font-size:8px; }
+    .tl-date { font-size:12px; font-weight:700; color:var(--fg); }
+    .tl-label { font-size:12px; color:var(--soft); margin-top:1px; }
+    .tl-item.done .tl-label { color:var(--good); }
+    .mini-list { display:grid; gap:8px; margin-top:10px; }
+    .mini-item { display:flex; gap:10px; align-items:flex-start; color:#dfe6ff; font-size:15px; line-height:1.4; }
+    .mini-dot { width:8px; height:8px; border-radius:999px; margin-top:7px; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 0 14px rgba(125,211,252,.45); flex: 0 0 auto; }
+    .now-board { border:1px solid var(--line); border-radius: 26px; padding: 22px; background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)); }
+    .now-kpi { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .now-kpi .metric { padding:16px; }
+    .brand-pill-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    .brand-pill { padding:10px 14px; border-radius:999px; background: rgba(255,255,255,.05); border:1px solid var(--line); color:#eef3ff; font-size:15px; }
+    @media (max-width: 1080px) {
+      body { padding: 16px; }
+      .slide { min-height: auto; padding: 24px; }
+      h1 { font-size: 44px; }
+      h2 { font-size: 30px; }
+      .subtitle { font-size: 18px; }
+      .big-statement { font-size: 28px; }
+      .hero-grid, .diagram, .cols-2, .rainbow-layout, .status-grid { grid-template-columns: 1fr; }
+      .cols-3, .metric-row, .timeline, .now-kpi { grid-template-columns: 1fr 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .flow .step:after { content:"\2193"; position:static; display:block; text-align:center; transform:none; color:var(--muted); font-size:22px; margin-top:8px; right:auto; top:auto; }
+      .flow .step:last-child:after { display:none; }
+      .flow .step { min-height:auto; }
+      .phase::after { display:none; }
+      .diagram-scroll-wrap { overflow-x: visible; margin: 0; padding: 0; }
+      .core { min-height: 400px; transform: none; margin-bottom: 0; width: 100%; }
+      .core-center { width: 220px; height: 220px; }
+      .core-center .title { font-size: 20px; }
+      .orbit { font-size: 13px; padding: 9px 12px; }
+      .rainbow-card { min-height: 400px; padding-bottom: 80px; }
+      .arc-1 { padding-top: 10%; }
+      .arc-2 { padding-top: 6%; }
+      .arc-3 { padding-top: 4%; }
+      .arc span { font-size: 13px; max-width: 180px; }
+      .arc small { font-size: 11px; }
+      .footer-note { padding-top: 16px; }
+      .quote { font-size: 26px; }
+      .metric .num { font-size: 32px; }
+      table { font-size: 14px; }
+      th, td { padding: 10px 8px; }
+    }
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .slide { padding: 18px 16px; border-radius: 18px; }
+      h1 { font-size: 32px; }
+      h2 { font-size: 24px; }
+      .subtitle { font-size: 16px; }
+      .big-statement { font-size: 22px; }
+      .cols-3, .metric-row, .timeline, .now-kpi { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .flow .step:after { content:"\2193"; position:static; display:block; text-align:center; transform:none; color:var(--muted); font-size:22px; margin-top:8px; right:auto; top:auto; }
+      .flow .step:last-child:after { display:none; }
+      .rainbow-card { min-height: 340px; padding-bottom: 72px; }
+      .arc-1 { width: 96%; height: 88%; padding-top: 8%; }
+      .arc-2 { width: 74%; height: 62%; padding-top: 5%; }
+      .arc-3 { width: 50%; height: 36%; padding-top: 3%; }
+      .arc span { font-size: 11px; max-width: 120px; }
+      .arc small { font-size: 10px; margin-top: 3px; }
+      .quote { font-size: 22px; }
+      .metric .num { font-size: 28px; }
+      .kicker { font-size: 12px; padding: 7px 10px; }
+      .card-title { font-size: 17px; }
+      .item p { font-size: 16px; }
+      .chip { font-size: 13px; padding: 8px 12px; }
+      table { width: 100%; white-space: normal; }
+      .diagram-scroll-wrap { margin: 0; padding: 0; overflow-x: visible; }
+      .core { min-height: 340px; transform: none; margin-bottom: 0; width: 100%; }
+      .core-center { width: 160px; height: 160px; }
+      .core-center .title { font-size: 16px; }
+      .core-center .small { font-size: 10px; }
+      .orbit { font-size: 10px; padding: 6px 8px; }
+    }
+    /* ── Responsive layout: mobil → PC (přebíjí inline grid styly) ── */
+    @media (max-width: 1080px) {
+      /* všechny gridy (i s inline grid-template-columns) na 1 sloupec */
+      .slide [style*="grid-template-columns"],
+      .cols-2, .cols-3, .hero-grid, .status-grid, .rainbow-layout, .diagram,
+      .metric-row, .timeline, .now-kpi { grid-template-columns: 1fr !important; }
+      h1 { font-size: 44px !important; }
+      /* tabulky: vyplní panel (width:100%) a zalamují text (žádný display:block/nowrap) */
+      table { width: 100% !important; white-space: normal !important; }
+      th, td { white-space: normal !important; }
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 32px !important; }
+      h2 { font-size: 24px !important; }
+      table { font-size: 12px !important; }
+      th, td { padding: 6px 6px !important; }
+    }
+    @media (max-width: 430px) {
+      table { font-size: 10.5px !important; }
+      th, td { padding: 4px 5px !important; }
+      .subtitle { font-size: 15px; }
+      .item p { font-size: 13px !important; }
+    }
+    /* roadmap (slide 8): na mobilu místo horizontální osy svislý seznam */
+    @media (max-width: 820px) {
+      .footer-note .anim-bar { height: auto !important; overflow: visible !important; }
+      .footer-note .anim-bar > div { min-width: 0 !important; margin: 0 !important; }
+      .footer-note .anim-bar > div > div { position: static !important; width: auto !important; transform: none !important; text-align: left !important; display: flex; align-items: center; gap: 10px; margin: 0 0 10px 0; }
+      .footer-note .anim-bar .track { display: none !important; }
+      .footer-note .anim-bar > div > div > div { margin: 0 !important; flex-shrink: 0; }
+      .footer-note .anim-bar > div > div > div:last-child { flex-shrink: 1; }
+    }
+    /* ── Scroll animations ── */
+    .anim {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .js-ready .anim {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    .js-ready .anim.visible, .anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* stagger children inside grids */
+    .anim-children > * {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.55s cubic-bezier(.22,1,.36,1), transform 0.55s cubic-bezier(.22,1,.36,1);
+    }
+    .js-ready .anim-children > * {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .js-ready .anim-children.visible > *, .anim-children.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .anim-children.visible > *:nth-child(1) { transition-delay: 0s; }
+    .anim-children.visible > *:nth-child(2) { transition-delay: 0.08s; }
+    .anim-children.visible > *:nth-child(3) { transition-delay: 0.16s; }
+    .anim-children.visible > *:nth-child(4) { transition-delay: 0.24s; }
+    .anim-children.visible > *:nth-child(5) { transition-delay: 0.32s; }
+    .anim-children.visible > *:nth-child(6) { transition-delay: 0.40s; }
+    /* scale-in for diagram */
+    .anim-scale {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .js-ready .anim-scale { opacity: 0; transform: scale(0.88); }
+    .js-ready .anim-scale.visible, .anim-scale.visible { opacity: 1; transform: scale(1); }
+    /* fade only */
+    .anim-fade {
+      opacity: 1;
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .js-ready .anim-fade { opacity: 0; }
+    .js-ready .anim-fade.visible, .anim-fade.visible { opacity: 1; }
+    /* bar fill animation */
+    .anim-bar .fill {
+      transition: width 1.2s cubic-bezier(.22,1,.36,1) 0.3s;
+    }
+    .js-ready .anim-bar .fill { width: 0 !important; }
+    .js-ready .anim-bar.visible .fill { /* width set inline */ }
+    /* progress bar animation */
+    .anim-progress .progress-xl > div,
+    .progress-xl.anim-progress > div {
+      transition: width 1s cubic-bezier(.22,1,.36,1) 0.4s;
+    }
+    .js-ready .anim-progress .progress-xl > div,
+    .js-ready .progress-xl.anim-progress > div { width: 0 !important; }
+    .js-ready .anim-progress.visible .progress-xl > div { /* width set inline */ }
+    /* Slide 4 diagram wrapper for mobile scaling */
+    .diagram-scroll-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      z-index: 2;
+      height: 100%;
+    }
+    /* Brand & confidentiality (dark theme) */
+    .topbar { gap: 14px; align-items: center; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .confidential { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border: 1px solid var(--line); border-radius: 6px; white-space: nowrap; background: rgba(255,255,255,.04); }
+    .brand-logo { display: inline-flex; align-items: center; }
+    .brand-logo img { transition: opacity .15s; }
+    .brand-logo:hover img { opacity: .75; }
+    .confidential-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 16px; margin: 0 auto 18px auto; max-width: 1460px; font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .confidential-banner b { color: var(--text); font-weight: 800; }
+    @media (max-width: 640px) { .confidential { font-size: 8.5px; padding: 3px 6px; } .brand-logo img { height: 34px !important; } }
+
+    @media print {
+      body { padding: 0; background: #fff; }
+      .slide { page-break-after: always; break-after: page; border-radius: 0; min-height: 100vh; box-shadow:none; }
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="confidential-banner"><span><b>Strictly Confidential</b> · Investor Memorandum · 2026</span><span>Nomiverse Holding · Pro účely jednání o investici, neurčeno k distribuci</span></div>
+  <div class="deck">
+        <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>RV Infrastructure Platform</b> <span>ČR core · CEE expansion / investor memorandum</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">01</div></div> </div> <h1 class="anim" style="font-size:56px;">Budujeme <span style="background:linear-gradient(90deg,#7dd3fc,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent;">RV Infrastructure Platform</span> pro CEE</h1> <div class="panel strong anim" style="margin-top:24px; padding:24px 28px; border-left:3px solid var(--accent); position:relative; z-index:2; flex-shrink:0;"> <div style="font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; font-weight:650;">Executive Summary</div> <p style="font-size:18px; line-height:1.55; color:rgb(226,232,255); margin:0;">Po pěti letech budování firem od nuly na tržby 150 mil. Kč a break-even, jsme připraveni akcelerovat další růst skrze M&amp;A. Budujeme asset‑backed infrastrukturní platformu, která konsoliduje fragmentovaný trh lokálních RV (recreational vehicle) firem do první značkové multibrand sítě RV servisů, dealerství a půjčoven v ČR – s navazujícím potenciálem expanze do dalších CEE trhů (DACH, SK, PL).<br><br>Na trhu jsou firmy, které lze koupit za 3–5× EBITDA. Jsou ziskové, ale nerostou, mají zanedbanou digitalizaci a brand. Skrze centralizaci nákupů a služeb zvýšíme EBITDA margin, zefektivníme operations díky digitální/AI transformaci, procesnímu řízení, jednotnému brandu a moderní customer experience. Zvýšíme valuaci EBITDA multiple na 7–9× díky vytvoření market leadera s exkluzivitou značek, tržbami 1,5+ mld Kč, 10–13% market share a růstu EBITDA margin.<br><br>Skoupíme areály, které pronajmeme vlastním nebo franšízovým pobočkám, čímž zkombinujeme příjem z nájmu, podnikání a royalties s budováním hodnoty skrze zhodnocení nemovitostí.</p> </div> <div class="hero-grid anim-children"> <div class="panel strong"> <div class="card-title">Představení holdingu Nomiverse</div> <p style="font-size:16px; line-height:1.45; color:#e8edff; margin:0 0 4px 0;"><b style="color:#fff;">Hands-on operator:</b> 5+ let v segmentu, 5 etablovaných firem v hodnotovém řetězci, seniorní team.</p> <div style="text-align:center; padding:14px 0;"> <div style="display:inline-block; padding:12px 22px; border:2px solid var(--accent); border-radius:14px; background:rgba(125,211,252,.1); font-size:17px; font-weight:700; color:#fff;">Nomiverse Holding</div> <div style="display:flex; justify-content:center; margin-top:10px;"><div style="width:2px; height:22px; background:var(--line);"></div></div> <div style="display:grid; grid-template-columns:1.7fr 1fr; gap:10px; margin-top:0;"> <div style="padding:10px 8px; border:1px dashed rgba(125,211,252,.45); border-radius:14px; background:rgba(125,211,252,.04);"> <div style="font-size:10px; color:#7dd3fc; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px; text-align:left;">Digital layer</div> <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:5px;"> <div style="padding:7px 3px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.05); text-align:center;"><div style="font-weight:700; font-size:12px; color:#7dd3fc;">Campiri</div><div style="font-size:9px; color:var(--muted); margin-top:3px; line-height:1.2;">RV rental Marketplace</div></div> <div style="padding:7px 3px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.05); text-align:center;"><div style="font-weight:700; font-size:12px; color:#86efac;">Dokempu</div><div style="font-size:9px; color:var(--muted); margin-top:3px; line-height:1.2;">Kempy &amp; Community</div></div> <div style="padding:7px 3px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.05); text-align:center;"><div style="font-weight:700; font-size:12px; color:#fde68a;">Carivio</div><div style="font-size:9px; color:var(--muted); margin-top:3px; line-height:1.2;">Operations platform</div></div> <div style="padding:7px 3px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.05); text-align:center;"><div style="font-weight:700; font-size:12px; color:#c4b5fd;">Iguana</div><div style="font-size:9px; color:var(--muted); margin-top:3px; line-height:1.2;">Tech &amp; AI dev studio</div></div> </div> </div> <div style="padding:10px 8px; border:1px dashed rgba(167,139,250,.45); border-radius:14px; background:rgba(167,139,250,.04);"> <div style="font-size:10px; color:#a78bfa; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px; text-align:left;">Fyzická pobočka</div> <div style="padding:8px 4px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.05); text-align:center;"><div style="font-weight:700; font-size:13px; color:#a78bfa;">Nomivans</div><div style="font-size:10px; color:var(--muted); margin-top:3px; line-height:1.2;">Dealership, Servis, Rental</div></div> </div> </div> </div> <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;"> <div style="padding:12px 8px; border:1px solid var(--line); border-radius:12px; background:rgba(125,211,252,.08); text-align:center;"><div style="font-size:22px; font-weight:750; color:#7dd3fc; letter-spacing:-0.02em;">157 mil. Kč</div><div style="font-size:11px; color:var(--muted); margin-top:2px; line-height:1.3;">GMV 2026P<br>(z 134 mil. v 2025)</div></div> <div style="padding:12px 8px; border:1px solid var(--line); border-radius:12px; background:rgba(134,239,172,.08); text-align:center;"><div style="font-size:22px; font-weight:750; color:#86efac; letter-spacing:-0.02em;">+4 mil. Kč</div><div style="font-size:11px; color:var(--muted); margin-top:2px; line-height:1.3;">EBITDA 2026P<br>(breakeven flip)</div></div> <div style="padding:12px 8px; border:1px solid var(--line); border-radius:12px; background:rgba(167,139,250,.08); text-align:center;"><div style="font-size:22px; font-weight:750; color:#c4b5fd; letter-spacing:-0.02em;">2021</div><div style="font-size:11px; color:var(--muted); margin-top:2px; line-height:1.3;">Založeno<br>(start podnikání)</div></div> </div> </div> <div class="panel strong"> <div class="card-title">Investiční teze</div> <div class="bullet" style="margin-top:18px;"> <div class="item"><div class="dot"></div><p style="font-size:16px;"><b>Fragmentovaný rostoucí trh:</b> 8–11 mld Kč ČR (CAGR 10+ %). Cílíme na firmy: <b>1)</b> mladé rostoucí hledající silného partnera, <b>2)</b> stagnující etablované, zaostalé v digitalizaci a marketingu a <b>3)</b> distressed legacy s exkluzivními značkami.</p></div> <div class="item"><div class="dot"></div><p style="font-size:16px;"><b>EBITDA arbitráž + margin expansion:</b> akvizice @ 3–5× EBITDA, exit @ 7–9× při margin pushi 5 % → 10 %. Kombinovaný uplift přes multiple expansion i EBITDA růst.</p></div> <div class="item"><div class="dot"></div><p style="font-size:16px;"><b>AI-rezistentní segment:</b> fyzická infrastruktura, manuální servis komplexního produktu, lokální zákazník – real-world moat proti tech disruptci.</p></div> <div class="item"><div class="dot"></div><p style="font-size:16px;"><b>Asset-backed downside protection:</b> PropCo páteř (areály na okrajích měst), entry yield 5–7 %, bankovně financovatelný hard asset – sleva při exit.</p></div> </div> </div> </div> <div class="footer-note" style="display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap;"><span style="flex:1; min-width:240px;">Core thesis: RV trh je dnes strukturálně rostoucí, fragmentovaný a připravený na platformovou hru – ČR jako anchor market, CEE jako prostor pro další expanzi.</span><span style="font-size:10.5px; letter-spacing:.06em; text-align:right; line-height:1.5; max-width:380px;"><b style="color:var(--text); text-transform:uppercase; letter-spacing:.12em;">Strictly Confidential</b><br>Tento dokument obsahuje důvěrné informace. Distribuce, kopírování ani sdílení bez písemného souhlasu Nomiverse Holding je zakázáno.</span></div> </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>02.</b> <span>Skupina &amp; finanční trajektorie</span></div>
+        </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">02</div></div>
+      </div>
+      <h2 class="anim">Od startupových začátků <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">k profitabilitě</span></h2>
+      <p class="subtitle anim">Od roku 2021 jsme postavili funkční digitální vrstvu, základy fyzické infrastruktury a překlopili skupinu do zisku (2026).</p>
+
+      <div class="cols-2 anim-children" style="margin-top:24px; grid-template-columns: 1fr 1fr;">
+        <div style="display:grid; gap:14px;">
+          <div class="panel strong">
+            <div class="card-title">Konsolidovaný finanční přehled <span class="muted" style="font-weight:400; font-size:13px;">(mil. Kč)</span></div>
+            <table style="margin-top:10px; font-size:14px;">
+              <thead>
+                <tr>
+                  <th style="min-width:110px; font-size:13px; padding:8px 6px;">Metrika</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2023A</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2024A</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2025E</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2026P</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2027P</th>
+                  <th style="text-align:right; font-size:13px; padding:8px 6px;">2028P</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding:7px 6px;"><b>GMV</b></td>
+                  <td style="text-align:right; padding:7px 6px;">164</td>
+                  <td style="text-align:right; padding:7px 6px;">132</td>
+                  <td style="text-align:right; padding:7px 6px;">155</td>
+                  <td style="text-align:right; padding:7px 6px;"><b>172</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>326</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>460</b></td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 6px;"><b>Revenue</b></td>
+                  <td style="text-align:right; padding:7px 6px;">127</td>
+                  <td style="text-align:right; padding:7px 6px;">101</td>
+                  <td style="text-align:right; padding:7px 6px;">125</td>
+                  <td style="text-align:right; padding:7px 6px;"><b>129</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>178</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>248</b></td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 6px;"><b>Gross Margin</b></td>
+                  <td style="text-align:right; padding:7px 6px;">3</td>
+                  <td style="text-align:right; padding:7px 6px;">33</td>
+                  <td style="text-align:right; padding:7px 6px;">37</td>
+                  <td style="text-align:right; padding:7px 6px;"><b>36</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>53</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b>74</b></td>
+                </tr>
+                <tr style="background:rgba(134,239,172,.06);">
+                  <td style="padding:7px 6px;"><b class="green">EBITDA</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><span style="color:#fca5a5;">−33</span></td>
+                  <td style="text-align:right; padding:7px 6px;"><span style="color:#fca5a5;">−16</span></td>
+                  <td style="text-align:right; padding:7px 6px;"><span style="color:#fca5a5;">−3</span></td>
+                  <td style="text-align:right; padding:7px 6px;"><b class="green">4</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b class="green">15</b></td>
+                  <td style="text-align:right; padding:7px 6px;"><b class="green">25</b></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="muted" style="font-size:11px; margin:8px 0 0 0; line-height:1.4; font-style:italic; text-align:right;">Plán 2026–2028: organický růst bez M&amp;A.</p>
+          </div>
+
+          <div class="panel">
+            <div class="card-title">EBITDA trajektorie <span class="muted" style="font-weight:400; font-size:13px;">(mil. Kč)</span></div>
+            <div style="display:flex; gap:10px; height:240px; padding:0; position:relative; margin-top:14px; margin-bottom:22px;">
+              <div style="position:absolute; left:0; right:0; top:45%; height:2px; background:var(--line); z-index:1;"></div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; top:45%; width:100%; display:flex; flex-direction:column; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(180deg, #fca5a5, #ef4444); border-radius:0 0 8px 8px; height:83px;"></div>
+                  <div style="font-size:11px; color:#fca5a5; font-weight:600; margin-top:4px;">−33</div>
+                  <div style="font-size:10px; color:var(--muted); margin-top:2px;">2023A</div>
+                </div>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; top:45%; width:100%; display:flex; flex-direction:column; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(180deg, #fca5a5, #ef4444); border-radius:0 0 8px 8px; height:40px;"></div>
+                  <div style="font-size:11px; color:#fca5a5; font-weight:600; margin-top:4px;">−16</div>
+                  <div style="font-size:10px; color:var(--muted); margin-top:2px;">2024A</div>
+                </div>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; top:45%; width:100%; display:flex; flex-direction:column; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(180deg, #fca5a5, #ef4444); border-radius:0 0 8px 8px; height:8px;"></div>
+                  <div style="font-size:11px; color:#fca5a5; font-weight:600; margin-top:4px;">−3</div>
+                  <div style="font-size:10px; color:var(--muted); margin-top:2px;">2025E</div>
+                </div>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; bottom:55%; width:100%; display:flex; flex-direction:column-reverse; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(0deg, #86efac, #34d399); border-radius:8px 8px 0 0; height:10px;"></div>
+                  <div style="font-size:11px; color:#86efac; font-weight:600; margin-bottom:4px;">+4</div>
+                </div>
+                <div style="position:absolute; top:calc(45% + 6px); font-size:10px; color:var(--muted);">2026P</div>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; bottom:55%; width:100%; display:flex; flex-direction:column-reverse; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(0deg, #86efac, #34d399); border-radius:8px 8px 0 0; height:38px;"></div>
+                  <div style="font-size:11px; color:#86efac; font-weight:600; margin-bottom:4px;">+15</div>
+                </div>
+                <div style="position:absolute; top:calc(45% + 6px); font-size:10px; color:var(--muted);">2027P</div>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+                <div style="position:absolute; bottom:55%; width:100%; display:flex; flex-direction:column-reverse; align-items:center;">
+                  <div style="width:80%; background:linear-gradient(0deg, #86efac, #34d399); border-radius:8px 8px 0 0; height:63px;"></div>
+                  <div style="font-size:11px; color:#86efac; font-weight:600; margin-bottom:4px;">+25</div>
+                </div>
+                <div style="position:absolute; top:calc(45% + 6px); font-size:10px; color:var(--muted);">2028P</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="display:flex; flex-direction:column;">
+          <div class="card-title">Skupina Nomiverse – co jsme postavili</div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+            <div class="panel" style="padding:12px 14px; background:rgba(167,139,250,.05); display:flex; flex-direction:column; justify-content:center; flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-size:15px; margin:0; line-height:1.2;">🏢 Nomivans <span class="muted" style="font-weight:400; font-size:12px;">— fyzická infrastruktura</span></h3>
+                <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; border:1px solid rgba(134,239,172,.35); color:#86efac; white-space:nowrap;">LIVE</span>
+              </div>
+              <p class="small" style="margin:6px 0 0 0; font-size:12.5px; line-height:1.4;">Fyzická pobočka: dealership, servis, parkování, rental (vč. asset-light managed fleet) a prodej ojetin. Blueprint pro další pobočky a franšízu.</p>
+            </div>
+            <div class="panel" style="padding:12px 14px; background:rgba(134,239,172,.05); display:flex; flex-direction:column; justify-content:center; flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-size:15px; margin:0; line-height:1.2;">🚐 Campiri <span class="muted" style="font-weight:400; font-size:12px;">— RV rental marketplace</span></h3>
+                <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; border:1px solid rgba(134,239,172,.35); color:#86efac; white-space:nowrap;">LIVE</span>
+              </div>
+              <p class="small" style="margin:6px 0 0 0; font-size:12.5px; line-height:1.4;">Marketplace pro půjčování RV – etablovaný market leader v ČR. Agregátor nabídky od půjčoven i soukromých majitelů.</p>
+            </div>
+            <div class="panel" style="padding:12px 14px; background:rgba(196,181,253,.06); display:flex; flex-direction:column; justify-content:center; flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-size:15px; margin:0; line-height:1.2;">🤖 Iguana Technology <span class="muted" style="font-weight:400; font-size:12px;">— Dev &amp; AI transformation</span></h3>
+                <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; border:1px solid rgba(134,239,172,.35); color:#86efac; white-space:nowrap;">LIVE</span>
+              </div>
+              <p class="small" style="margin:6px 0 0 0; font-size:12.5px; line-height:1.4;">AI-powered product development studio – staví a škáluje digitální produkty skupiny i pro externí klienty. Interní tech &amp; AI engine skupiny.</p>
+            </div>
+            <div class="panel" style="padding:12px 14px; background:rgba(253,230,138,.05); display:flex; flex-direction:column; justify-content:center; flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-size:15px; margin:0; line-height:1.2;">⛺ Dokempu <span class="muted" style="font-weight:400; font-size:12px;">— camping guide &amp; community</span></h3>
+                <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; border:1px solid rgba(134,239,172,.35); color:#86efac; white-space:nowrap;">LIVE</span>
+              </div>
+              <p class="small" style="margin:6px 0 0 0; font-size:12.5px; line-height:1.4;">Nejoblíbenější český průvodce po kempech. Silný partner pro majitele kempů a jejich online prezentaci.</p>
+            </div>
+            <div class="panel" style="padding:12px 14px; background:rgba(125,211,252,.05); display:flex; flex-direction:column; justify-content:center; flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-size:15px; margin:0; line-height:1.2;">💻 Carivio <span class="muted" style="font-weight:400; font-size:12px;">— Digital Operations Platform</span></h3>
+                <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; border:1px solid rgba(125,211,252,.35); color:#7dd3fc; white-space:nowrap;">MVP 06/2026</span>
+              </div>
+              <p class="small" style="margin:6px 0 0 0; font-size:12.5px; line-height:1.4;">„Mews pro půjčovny RV" – channel manager, online booking, fleet management, dynamic pricing, embedded F&amp;I a AI predikce ekonomiky vozu.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">Konsolidace zahrnuje <b>5 firem</b>: Campiri, Nomivans, Dokempu, Carivio a Iguana Technology. Projekce 2026–2028 z interního modelu – <b>organický růst stávajících 5 firem bez M&amp;A</b>. GMV = gross merchandise value pro Campiri a Carivio + Revenue pro Nomivans, Dokempu a Iguana.</div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>03.</b> <span>Tým</span></div>
+        </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">03</div></div>
+      </div>
+      <h2 class="anim">Sehraný tým s <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">M&amp;A i turn-around DNA</span></h2>
+      <p class="subtitle anim">Operátoři s 8–16 lety zkušeností napříč financemi, právem, operations a technologiemi – plus prokázaná schopnost akvírovat, integrovat a ozdravit firmy.</p>
+
+      <div class="panel strong anim" style="margin-top:22px;">
+        <div class="card-title">Leadership tým</div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px;">
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="lukas-janousek.jpg" alt="Lukáš Janoušek" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Lukáš Janoušek</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Founder &amp; Group CEO</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>14 let</b> sériový podnikatel</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Ex-CMO &amp; SH <b>Twisto</b> (exit ZIP Co @ €100M)</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="lukas-dohodil.jpg" alt="Lukáš Dohodil" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Lukáš Dohodil</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">CEO Nomivans &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>8 let</b>, co-founder Nomivans</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Strategy, leadership, BD</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="paul-tesar.jpg" alt="Paul Tesar" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Paul Tesar</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Co-founder &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>16 let</b> zkušeností</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Co-founder &amp; CPTO vícero startupů v EU a USA</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="vladimir-prchlik.jpg" alt="Vladimír Prchlík" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Vladimír Prchlík</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Group Head of Finance &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>13 let</b>, ex-KPMG &amp; EVI</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Finance, reporting, DD, tax</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="hana-pultznerova.jpg" alt="Hana Pultznerová" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Hana Pultznerová</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Legal Counsel &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>13 let</b> zkušeností</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Business law, M&amp;A, Legal DD</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="marketa-brabcova.jpg" alt="Markéta Brabcová" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Markéta Brabcová</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Head of Operations &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>16 let</b> zkušeností</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">Operations, HR, back office</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="lukas-holovsky.jpg" alt="Lukáš Holovský" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Lukáš Holovský</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Managing Director Iguana</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>8 let</b> zkušeností</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">AI, ML models, Data, Deep-tech</p></div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:12px; background:rgba(125,211,252,.05);">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <img src="jan-pospisil.jpg" alt="Jan Pospíšil" style="flex-shrink:0; width:52px; height:52px; border-radius:50%; object-fit:cover; border:1px solid rgba(125,211,252,.4);" />
+              <div style="flex:1; min-width:0;">
+                <h3 style="font-size:13.5px; margin:0 0 1px 0; line-height:1.2;">Jan Pospíšil</h3>
+                <div style="font-size:9.5px; color:#7dd3fc; font-weight:600; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;">Head of Engineering &amp; Partner</div>
+              </div>
+            </div>
+            <div class="bullet" style="gap:4px; margin-top:8px;">
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;"><b>16 let</b> zkušeností</p></div>
+              <div class="item"><div class="dot" style="margin-top:5px; width:6px; height:6px;"></div><p style="font-size:11px; line-height:1.35;">VP Engineering &amp; CTO vícero startupů</p></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel anim" style="margin-top:16px;">
+        <div class="card-title" style="margin-bottom:4px;">M&amp;A case: Campiri × FreewayCamper</div>
+        <p style="font-size:12.5px; line-height:1.5; color:var(--muted); margin:0 0 14px 0;">Cross-border M&amp;A (2024–2025): merger Campiri s německým FreewayCamper. Kolaps partnera prověřil tým v ostré krizi – ten z ní vyšel jako <b style="color:#dfe6ff;">battle-tested operátor</b> s reálným M&amp;A, krizovým i turn-around know-how.</p>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+          <div class="panel" style="padding:12px 14px; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.18);">
+            <div style="font-size:11px; color:#7dd3fc; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">1 · M&amp;A execution</div>
+            <p style="margin:0; font-size:12px; line-height:1.45; color:#dfe6ff;">Strukturovaný cross-border merger + společné investiční kolo <b>€3,5M</b>; vyjednaný <b>LOI na exit</b> v nižších desítkách mil. €.</p>
+          </div>
+          <div class="panel" style="padding:12px 14px; background:rgba(251,113,133,.06); border-color:rgba(251,113,133,.2);">
+            <div style="font-size:11px; color:#fb7185; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">2 · Krizový management</div>
+            <p style="margin:0; font-size:12px; line-height:1.45; color:#dfe6ff;">Převzetí řízení německé GmbH v krizi, vedení tvrdých úsporných opatření a jednání s bankami/dodavateli/investory; <b>řízený útlum</b> FWC (03/2025) <b>bez nákazy</b> zbytku skupiny.</p>
+          </div>
+          <div class="panel" style="padding:12px 14px; background:rgba(134,239,172,.07); border-color:rgba(134,239,172,.22);">
+            <div style="font-size:11px; color:#86efac; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">3 · Turn-around (2025)</div>
+            <p style="margin:0; font-size:12px; line-height:1.45; color:#dfe6ff;">Zpětný odkup Campiri z konkurzní podstaty Freeway Camper do Nomiverse (11/2025), restrukturalizace a pivot na profitabilitu: <b>náklady −50 % YoY</b>, tržby udrženy, <b>2026 překlopení do zisku</b>; Iguana ustála výpadek revenue a dluh po Freeway Camper.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">Tým kombinuje seniorní operátorské zkušenosti s reálným M&amp;A a krizovým know-how – nejen akvizice, ale i integrace a ozdravení firem v problémech.</div>
+    </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">04.</b> <span style="">Proč jsou RVs zajímavé</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">04</div></div> </div> <h2 class="anim" style="">RV je komplexní produkt = <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">více revenue streams + customer lock-in</span></h2> <p class="subtitle anim" style="">Obytný vůz kombinuje dům (bojler, plyn, teplo, lednice, WC, sprcha) s motorovým vozidlem. To vytváří servisní zátěž 2–3× ročně a řetězec upsellů po celou dobu vlastnictví.</p> <div class="cols-2 anim-children"> <div class="panel strong"> <div class="card-title" style="">Ekonomika jednoho RV zákazníka</div> <div class="bullet"> <div class="item"><div class="dot"></div><p style=""><b>1,5–3 mil. Kč</b> běžný obytný vůz <span class="muted">(luxury 3–15 mil. Kč)</span>.</p></div> <div class="item"><div class="dot"></div><p style=""><b>+ 5–10 %</b> pořizovací hodnoty v doplňcích (solár, klima, baterie, držáky).</p></div> <div class="item"><div class="dot"></div><p style=""><b>+ 2–3× ročně servis</b>: jarní odzimování, podzimní ukončení sezony, servis motoru.</p></div> <div class="item"><div class="dot"></div><p style=""><b>+ průběžné opravy</b> z menších poškození – velikost vozu = pojistné události.</p></div> <div class="item"><div class="dot"></div><p style=""><b>+ přidané služby</b>: RV parkujeme, udržujeme a pronajímáme majiteli přes Campiri → flywheel.</p></div> </div> </div> <div class="panel"> <div class="card-title" style="">Srovnání: auto / motorka / obytný vůz</div> <table> <thead> <tr><th style="">Segment</th><th style="">Cena</th><th style="">Front-end marže</th><th style="">Upsell (5 let)</th><th style="">Celkem 5 let</th></tr> </thead> <tbody> <tr><td style="">Nové osobní auto</td><td style="">35k €</td><td style="">0–2 100 €</td><td style="">~3 550 €</td><td style=""><b>~3 550–5 650 €</b></td></tr> <tr><td style="">Nová motorka</td><td style="">15k €</td><td style="">0–1 050 €</td><td style="">~3 000 €</td><td style=""><b>~3 000–4 050 €</b></td></tr> <tr style="background:rgba(125,211,252,.08);"><td style=""><b class="green">Nové obytné auto</b></td><td style=""><b>80k €</b></td><td style=""><b>~8 000 €</b></td><td style=""><b>~10 000 €</b></td><td style=""><b class="green">~18 000 €</b></td></tr> </tbody> </table> <p class="muted" style="font-size: 14px; margin-top: 14px;">RV generuje <b style="color:#fff;">~4× větší marži za 5 let</b> než osobní auto – hlavně díky vyšší ceně, vyšší servisní zátěži a vyšší penetraci doplňků.</p> </div> </div> <div class="footer-note" style="">Zdroj: AKK ČR, Haig Partners Q4 2024, Peak Business Valuation – RV Dealership Multiples, interní model.</div> </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">05.</b> <span style="">Situace v ČR</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">05</div></div> </div> <h2 class="anim" style="">Strukturálně rostoucí trh <span style="background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">~8–11 mld Kč</span> – fragmentovaný a nedigitalizovaný</h2> <p class="subtitle anim" style="">Desítky tisíc obytných aut v provozu, tisíce nových registrací ročně. Přibližně 120–160 dealerů, specializovaných servisů a půjčoven – s překryvy.</p> <div class="hero-grid anim-children" style="grid-template-columns: 1fr 1fr;"> <div class="panel strong"> <div class="card-title" style="">Velikost segmentů v ČR (ročně)</div> <table> <thead> <tr><th style="">Segment</th><th style="text-align: right;">Odhad (mld Kč)</th></tr> </thead> <tbody> <tr><td style="">Prodej nových obytných vozů</td><td style="text-align: right;"><b>3,4–3,8</b></td></tr> <tr><td style="">Prodej ojetých obytných vozů</td><td style="text-align: right;"><b>2,5–3,0</b></td></tr> <tr><td style="">Servis obytných vozů</td><td style="text-align: right;"><b>0,8–1,4</b></td></tr> <tr><td style="">Půjčování obytných vozů</td><td style="text-align: right;"><b>0,4–0,6</b></td></tr> <tr><td style="">Doplňková výbava</td><td style="text-align: right;"><b>0,6–1,5</b></td></tr> <tr><td style="">Pojištění a financování (F&amp;I)</td><td style="text-align: right;"><b>0,2–0,4</b></td></tr> <tr style="background:rgba(134,239,172,.08);"><td style=""><b>Celkem</b></td><td style="text-align: right;"><b class="green">~8–11 mld Kč</b></td></tr> </tbody> </table> </div> <div class="panel"> <div class="card-title" style="">Dnešní struktura trhu</div> <div class="bullet"> <div class="item"><div class="dot"></div><p style=""><b>Největší firmy dělají 200–300 mil. Kč</b> tržeb – jen <b>2–3 %</b> trhu.</p></div> <div class="item"><div class="dot"></div><p style=""><b>120–160 dealerů</b>, <b>~150 servisů</b>, <b>~100 půjčoven</b> – s překryvy.</p></div> <div class="item"><div class="dot"></div><p style="">Většina firem <b>founder-driven a owned</b>, založeny v 90. / nultých letech, postavené na offline kontaktech zakladatele.</p></div> <div class="item"><div class="dot"></div><p style="">Majitelé <b>v (před)důchodovém věku</b> – řeší nástupnictví.</p></div> <div class="item"><div class="dot"></div><p style="">Firmy <b>ziskové, ale zanedbané</b> z pohledu digitalizace, AI, marketingu a brandu; některé <b>stagnující a pod finančním tlakem</b>.</p></div> </div> <div class="panel" style="margin-top:18px; padding:16px; background:rgba(125,211,252,.06);"> <p style="margin: 0px; font-size: 14px; line-height: 1.5; color: rgb(223, 230, 255);"><b style="color:#7dd3fc;">Implikace:</b> Existují reálné akviziční targety, které lze koupit se slevou, protože zakladatelům chybí nástupce a kupec.</p> </div> </div> </div> <div class="footer-note" style="">Zdroje: AKK ČR statistiky registrací, CIVD (German Caravaning Industry Association), ECF European Caravan Federation (2023: EU tržby 15,3 mld €, ojeté/nové ratio 0,65×), Forbes, E15, Newstream. Stejně fragmentovaná struktura existuje v sousedních CEE trzích (DACH, SK, PL) – platforma vybudovaná v ČR je škálovatelná i přes hranice.</div> </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">06.</b> <span style="">AI resilience</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">06</div></div> </div> <h2 class="anim" style="">RV servis &amp; dealerství patří mezi <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">nejvíce<br>AI-rezistentní segmenty</span></h2> <p class="subtitle anim" style="">Fyzická infrastruktura, manuální servis komplexního produktu, lokální zákazník a asset-backed ekonomika tvoří moat, který LLM ani agenti nenahradí.</p> <div class="cols-2 anim-children" style="margin-top:28px;"> <div class="panel strong"> <div class="card-title" style="">Spektrum profesí – ohrožení AI</div> <div class="bars"> <div class="bar anim-bar"><div class="bar-top"><span>Content / copywriting</span><span class="red">~85%</span></div><div class="track"><div class="fill warn" style="width:85%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span>Software engineering (generic)</span><span class="yellow">~65%</span></div><div class="track"><div class="fill warn" style="width:65%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span>Customer support</span><span class="yellow">~60%</span></div><div class="track"><div class="fill warn" style="width:60%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span>Účetnictví / back-office</span><span class="yellow">~50%</span></div><div class="track"><div class="fill warn" style="width:50%;"></div></div></div> <div class="spectrum-divider"><span>AI-resilient segments below</span></div> <div class="bar anim-bar"><div class="bar-top"><span>Lokální retail &amp; logistika</span><span class="green">~20%</span></div><div class="track"><div class="fill resilient" style="width:22%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>RV servis &amp; dealerství</b></span><span class="green"><b>~12%</b></span></div><div class="track"><div class="fill resilient" style="width:14%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span>Real estate (fyzické pozemky)</span><span class="green">~8%</span></div><div class="track"><div class="fill resilient" style="width:10%;"></div></div></div> </div> </div> <div class="panel"> <div class="card-title" style="">Proč je RV infrastruktura chráněná</div> <div class="bullet"> <div class="item"><div class="dot"></div><p style=""><b>Fyzická práce:</b> kombinace truhlařiny, instalatérských, servis elektro a motoru vyžaduje lidské ruce a mozek v dílně.</p></div> <div class="item"><div class="dot"></div><p style=""><b>Areály na okrajích měst:</b> hard asset, kterého AI nevyrobí více.</p></div> <div class="item"><div class="dot"></div><p style=""><b>Lokální důvěra:</b> zákazníci RV za 2+ mil. Kč chtějí lidský kontakt a servis u sebe.</p></div> <div class="item"><div class="dot"></div><p style=""><b>Regulace &amp; certifikace:</b> distribuční licence, autorizovaný servis, partnerství s pojišťovnami vytváří bariéry vstupu.</p></div> <div class="item"><div class="dot"></div><p style=""><b>AI jako nástroj, ne konkurent:</b> používáme AI pro pricing, leadgen, operations – tvoří náš edge, ne moat disruptora.</p></div> </div> <p class="muted" style="font-size: 14px; margin-top: 18px;">Zatímco většina venture portfolií bude v příštích 5–10 letech vystavena AI risku, tato platforma těží z AI jako operational leverage – nikoli jako substituční hrozby.</p> </div> </div> <div class="footer-note" style="">Spektrum je indikativní, vychází z McKinsey, Goldman Sachs a Anthropic studií o dopadu AI na různé profese.</div> </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">07.</b> <span style="">Akviziční strategie</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">07</div></div> </div> <h2 class="anim" style="">Akviziční strategie: <span style="background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">OpCo + PropCo</span></h2> <p class="subtitle anim" style="">Akviziční strategie stojí na dvou nohách: provozní firmy (OpCo) a areály, ve kterých firmy podnikají (PropCo) – dvě komplementární value-creation teze: EBITDA multiple arbitráž z provozu + stabilní yield a apreciace z nemovitostí.</p> <div class="cols-2 anim-children" style="margin-top:24px;"> <div class="panel strong" style="border-color:rgba(125,211,252,.3);"> <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;"> <div style="padding:6px 12px; border-radius:10px; background:linear-gradient(135deg, rgba(125,211,252,.22), rgba(125,211,252,.08)); font-weight:750; color:#7dd3fc; font-size:14px; letter-spacing:0.04em;">OpCo · provozní byznys</div> </div> <div class="card-title" style="margin-bottom:8px;">Multiple arbitráž + EBITDA expansion</div> <p style="font-size:14px; line-height:1.5; color:var(--muted); margin:0 0 12px 0;">Kupujeme firmy se standalone multiplikátorem 3–5× EBITDA a skládáme platformu 1,5+ mld Kč, která se v exitu oceňuje 7–9× EBITDA.</p> <table> <thead> <tr><th style="">Upside</th><th style="">Single firma</th><th style="">Holding 1,5+ mld</th></tr> </thead> <tbody> <tr><td style=""><b>EBITDA multiple</b></td><td style="">3–5×</td><td style=""><span style="color:var(--muted);">→ </span><b class="green">7–9×</b></td></tr> <tr><td style=""><b>EBITDA marže</b></td><td style="">5–7 %</td><td style=""><span style="color:var(--muted);">→ </span><b class="green">10–12 %</b></td></tr> <tr><td style="padding-left:22px; color:var(--muted); font-size:12.5px;">↳ OEM rabat</td><td style="color:var(--muted); font-size:12.5px;">baseline</td><td style="color:var(--muted); font-size:12.5px;">→ +2–3 p.p.</td></tr> <tr><td style="padding-left:22px; color:var(--muted); font-size:12.5px;">↳ IT / AI / marketing</td><td style="color:var(--muted); font-size:12.5px;">minimum</td><td style="color:var(--muted); font-size:12.5px;">→ +1–2 p.p.</td></tr> <tr><td style="padding-left:22px; color:var(--muted); font-size:12.5px;">↳ Cross-sell / up-sell</td><td style="color:var(--muted); font-size:12.5px;">ad-hoc</td><td style="color:var(--muted); font-size:12.5px;">→ +1 p.p.</td></tr> </tbody> </table> <div class="bullet" style="margin-top:14px;"> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>EBITDA multiple arbitráž:</b> koupě 3–5× → exit 7–9× = +2–+4 multiple za market leadership.</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>EBITDA expansion:</b> marže 6 % → 10 % = +66 % EBITDA při stejných tržbách.</p></div> </div> </div> <div class="panel strong" style="border-color:rgba(167,139,250,.3);"> <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;"> <div style="padding:6px 12px; border-radius:10px; background:linear-gradient(135deg, rgba(167,139,250,.22), rgba(167,139,250,.08)); font-weight:750; color:#c4b5fd; font-size:14px; letter-spacing:0.04em;">PropCo · nemovitostní páteř</div> </div> <div class="card-title" style="margin-bottom:8px;">Nemovitostní páteř + stabilní yield</div> <p style="font-size:14px; line-height:1.5; color:var(--muted); margin:0 0 12px 0;">Kupujeme atraktivní pobočkové areály na okrajích velkých měst a pronajímáme je OpCo – nájemní yield + dlouhodobá apreciace pozemků.</p> <div class="bullet"> <div class="item"><div class="dot"></div><p style="font-size:14px; line-height:1.45;"><b>Lokality:</b> okraje Prahy a velkých měst, do 10–20 km od hranice města. Atraktivní zóny pro logistiku, retail i autoslužby.</p></div> <div class="item"><div class="dot"></div><p style="font-size:14px; line-height:1.45;"><b>Entry cap rate 5–7 %</b> – lepší než prime office/retail, konkurenceschopný vůči industriálu (~5,2 % prime yields v ČR).</p></div> <div class="item"><div class="dot"></div><p style="font-size:14px; line-height:1.45;"><b>Flexibilita využití:</b> RV dealerství + servis + rental dnes → backup scénář sklad, last-mile logistika, autobazar, retail.</p></div> <div class="item"><div class="dot"></div><p style="font-size:14px; line-height:1.45;"><b>Hard asset:</b> zajištění pro bankovní financování, nezávisle na operační výkonnosti.</p></div> </div> <div class="metric-row" style="margin-top:16px; grid-template-columns: repeat(2, 1fr);"> <div class="metric"><div class="num" style="font-size: 30px;">5–7 %</div><div class="lbl" style="">entry rental yield</div></div> <div class="metric"><div class="num" style="font-size: 30px;">3–12 000 m²</div><div class="lbl" style="">velikost areálů</div></div> </div> </div> </div> <div class="footer-note" style="">Kombinace OpCo + PropCo: multiple-arbitrage upside z provozu + stabilní yield a apreciace z nemovitostí; nemovitost navíc slouží jako hard asset pro bankovní financování každé akvizice.</div> </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">08.</b> <span style="">Timeline konsolidace</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">08</div></div> </div> <h2 class="anim" style="">Dvoufázový roll-up: <span style="background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;"><span style="white-space:nowrap;">2026–2028</span> + <span style="white-space:nowrap;">2028–2033</span></span></h2> <p class="subtitle anim" style="">Plán je rozdělen na 2 + 5 let ve dvou fázích – od získání anchor investora a prvních akvizic až po dokončený roll-up <b>10+ firem</b> a <b>1,5+ mld Kč tržeb</b>.</p> <div class="cols-2 anim-children" style="margin-top:26px;"> <div class="panel strong" style="border-color:rgba(125,211,252,.3);"> <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;"> <div style="padding:6px 12px; border-radius:10px; background:linear-gradient(135deg, rgba(125,211,252,.22), rgba(125,211,252,.08)); font-weight:750; color:#7dd3fc; font-size:14px; letter-spacing:0.04em;">FÁZE 1 · 2026–2028</div> </div> <div class="card-title" style="margin-bottom:8px;">Anchor investor, setup + první akvizice</div> <p style="font-size:14px; line-height:1.5; color:var(--muted); margin:0 0 12px 0;">2,5 roku na první akvizice, integrace a vytvoření playbook pro další M&amp;A.</p> <div class="panel" style="padding:12px 14px; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.18); margin-bottom:12px;"> <div style="font-size:11px; color:#7dd3fc; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">Potřebné finance</div> <p style="font-size:14px; line-height:1.5; margin:0; color:#fff;"><b>€2–3M equity</b> (anchor investor) <b>+ ~50 mil. Kč bank</b> debt (hypotéka na areál)</p> </div> <div style="font-size:11px; color:#7dd3fc; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:8px;">Use of Funds + priority</div> <div class="bullet"> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>3 senior hires</b> (M&amp;A, finance, operations)</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>1 anchor akvizice</b> Q3/2026 – Q1/2027</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>2 bolt-on akvizice</b></p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>1–2 areály</b> (PropCo)</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>Carivio MVP launch</b> + dovývoj features</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;">Integrace, procesy, standardizace</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;">Revaluace a příprava na Fázi 2</p></div> </div> </div> <div class="panel strong" style="border-color:rgba(167,139,250,.3);"> <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;"> <div style="padding:6px 12px; border-radius:10px; background:linear-gradient(135deg, rgba(167,139,250,.22), rgba(167,139,250,.08)); font-weight:750; color:#c4b5fd; font-size:14px; letter-spacing:0.04em;">FÁZE 2 · 2028–2033</div> </div> <div class="card-title" style="margin-bottom:8px;">Roll-up &amp; market leadership</div> <p style="font-size:14px; line-height:1.5; color:var(--muted); margin:0 0 12px 0;">5 let škálování na <b>10+ firem v portfoliu</b> a <b>1,5+ mld Kč tržeb</b>.</p> <div class="panel" style="padding:12px 14px; background:rgba(167,139,250,.06); border-color:rgba(167,139,250,.18); margin-bottom:12px;"> <div style="font-size:11px; color:#c4b5fd; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">Investice</div> <p style="font-size:14px; line-height:1.5; margin:0; color:#fff;">3 varianty: <b>A)</b> navýšení equity investice od Anchor 1, <b>B)</b> P/E deal se strategickým partnerem, <b>C)</b> konverze do SICAV a fundraise od kvalifikovaných investorů. Vždy doplněné bankou.</p> </div> <div style="font-size:11px; color:#c4b5fd; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:8px;">Use of Funds + priority</div> <div class="bullet"> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>Revaluace 2028/2029</b> (pre-money ~470 mil. Kč)</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>8+ dalších akvizic</b> napříč 2029–2031, ČR + CEE expansion</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;"><b>3–4 další PropCo areály</b> z bank debt + cash flow</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;">Plná integrace, synergie skupiny (růst EBITDA margin), brand unifikace</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;">2032–2033: <b>1,5+ mld Kč tržeb</b>, EBITDA 10–11 %, market leader pozice</p></div> <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:14px; line-height:1.45;">Potenciální vstup strategického <b>PE partnera</b>, či dividend-driven evergreen structure</p></div> </div> </div> </div> <div class="footer-note" style="margin-top:auto; padding-top:30px;"> <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin-bottom:30px;">Roadmap 2026–2033</div> <div class="anim-bar" style="position:relative; height:104px; overflow-x:auto; -webkit-overflow-scrolling:touch;"> <div style="position:relative; height:100%; min-width:760px; margin:0 80px;"> <div class="track" style="position:absolute; left:0; right:0; top:30px; height:6px; z-index:1;"> <div class="fill" style="width:100%; background:linear-gradient(90deg,#7dd3fc,#86efac 45%,#a78bfa);"></div> </div> <div style="position:absolute; left:0%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#7dd3fc; letter-spacing:-0.02em;">2026</div> <div style="width:14px; height:14px; border-radius:50%; background:#7dd3fc; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(125,211,252,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">Anchor investor + 1. akvizice</div> </div> <div style="position:absolute; left:20%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#7dd3fc; letter-spacing:-0.02em;">2027</div> <div style="width:14px; height:14px; border-radius:50%; background:#7dd3fc; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(125,211,252,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">Bolt-on akvizice + Carivio MVP</div> </div> <div style="position:absolute; left:40%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#86efac; letter-spacing:-0.02em;">2028</div> <div style="width:14px; height:14px; border-radius:50%; background:#86efac; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(134,239,172,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">Revaluace ~470 mil. Kč + Fáze 2</div> </div> <div style="position:absolute; left:60%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#c4b5fd; letter-spacing:-0.02em;">2029–2031</div> <div style="width:14px; height:14px; border-radius:50%; background:#c4b5fd; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(196,181,253,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">Roll-up 8+ akvizic, CEE</div> </div> <div style="position:absolute; left:80%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#c4b5fd; letter-spacing:-0.02em;">2032</div> <div style="width:14px; height:14px; border-radius:50%; background:#c4b5fd; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(196,181,253,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">1,5+ mld Kč, market leader</div> </div> <div style="position:absolute; left:100%; top:0; width:138px; transform:translateX(-50%); text-align:center; z-index:2;"> <div style="font-size:15px; line-height:18px; font-weight:750; color:#a78bfa; letter-spacing:-0.02em;">2033</div> <div style="width:14px; height:14px; border-radius:50%; background:#a78bfa; margin:8px auto; box-shadow:0 0 0 3px var(--bg), 0 0 0 5px rgba(167,139,250,.45);"></div> <div style="font-size:12px; color:#cfd6f0; line-height:1.3;">Exit / PE / evergreen</div> </div> </div> </div> </div> </section>
+
+    <section class="slide"> <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b style="">09.</b> <span style="">Investiční nabídka — Fáze 1</span></div> </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">09</div></div> </div> <h2 class="anim" style="">Fáze 1: <span style="background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">struktura investice</span></h2> <p class="subtitle anim" style="">Ve Fázi 1 vloží Anchor investor <b>€3M equity</b> do Nomiverse výměnou za podíl <b>38,5 %</b>.</p> <div class="cols-2 anim-children" style="margin-top:26px;"> <div class="panel strong"> <div class="card-title" style="">Struktura dealu — Fáze 1</div> <table> <tbody> <tr><td style="">Pre-money valuace (hodnota podílů Nomiverse a Fortress Ventures ve firmách)</td><td style="text-align: right;"><b>120 mil. Kč</b></td></tr> <tr><td style="">Investor equity</td><td style="text-align: right;"><b>75 mil. Kč (€3M)</b></td></tr> <tr style="background:rgba(125,211,252,.08);"><td style=""><b>Post-money valuace</b></td><td style="text-align: right;"><b class="green">195 mil. Kč</b></td></tr> <tr><td style="">Investor podíl</td><td style="text-align: right;"><b>38,5 %</b></td></tr> <tr style="background:rgba(134,239,172,.08);"><td style=""><b>Nomiverse podíl</b></td><td style="text-align: right;"><b class="green">61,5 %</b></td></tr> <tr><td style="">Bonus carry pro Nomiverse</td><td style="text-align: right;"><b>+20 % při IRR ≥ 15 %</b></td></tr> <tr><td style="">Revaluace po integraci na ~470 mil. Kč</td><td style="text-align: right;"><b>2–3 roky</b></td></tr> </tbody> </table> </div> <div class="panel"> <div class="card-title" style="">Use of Funds – 75 mil. Kč</div> <div class="bars" style="margin-top:18px;"> <div class="bar anim-bar"><div class="bar-top"><span><b>OpCo – Anchor + Bolt-on akvizice</b> (cash při closingu)</span><span class="green">30 mil. Kč</span></div><div class="track"><div class="fill" style="width:40%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>PropCo</b> (equity pro bank debt ~35 %)</span><span>18 mil. Kč</span></div><div class="track"><div class="fill" style="width:24%; background:linear-gradient(90deg, #a78bfa, #c4b5fd);"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>Hiring senior team</b> (platy na 24 měsíců)</span><span>12 mil. Kč</span></div><div class="track"><div class="fill good" style="width:16%;"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>Carivio / Campiri / Dokempu vývoj</b></span><span style="color:#fde68a;">8 mil. Kč</span></div><div class="track"><div class="fill" style="width:11%; background:linear-gradient(90deg, #fbbf24, #fde68a);"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>DD, M&amp;A advisory, transakční a právní náklady</b></span><span class="muted">3 mil. Kč</span></div><div class="track"><div class="fill" style="width:4%; background:linear-gradient(90deg, #fb7185, #f9a8d4);"></div></div></div> <div class="bar anim-bar"><div class="bar-top"><span><b>Rezerva</b></span><span class="muted">4 mil. Kč</span></div><div class="track"><div class="fill" style="width:5%; background:linear-gradient(90deg, #818cf8, #a5b4fc);"></div></div></div> </div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px;"> <div class="panel" style="padding:12px 14px; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.18);"> <div style="font-size:11px; color:#7dd3fc; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">+ Bank debt</div> <p style="margin:0; font-size:14px; line-height:1.45; color:#dfe6ff;">Financování nákupu PropCo <b style="color:#fff;">50 mil. Kč</b></p> </div> <div class="panel" style="padding:12px 14px; background:rgba(167,139,250,.06); border-color:rgba(167,139,250,.18);"> <div style="font-size:11px; color:#c4b5fd; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px;">+ Earn-out</div> <p style="margin:0; font-size:14px; line-height:1.45; color:#dfe6ff;"><b style="color:#fff;">~30 mil. Kč</b> splatný z cash flow akvírovaných firem</p> </div> </div> <div class="panel" style="margin-top:12px; padding:14px 16px; background:rgba(134,239,172,.08); border-color:rgba(134,239,172,.25); text-align:center;"> <span style="font-size:24px; font-weight:750; color:#86efac; letter-spacing:-0.02em;">~155 mil. Kč</span> <span style="font-size:14px; color:#dfe6ff;"> · celková transakční síla</span> </div> </div> </div> </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>10.</b> <span>Pro forma s akvizicemi</span></div>
+        </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">10</div></div>
+      </div>
+      <h2 class="anim">S akvizicemi Fáze 1: <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">Revenue 0,57 mld Kč a EBITDA 50 mil. Kč v 2028</span> → revaluace na ~470 mil. Kč</h2>
+      <p class="subtitle anim">Anchor + bolt-on akvizice přidávají k organické trajektorii dalších <b>+325 mil. Kč Revenue</b> a <b>+25,5 mil. Kč EBITDA</b> do 2028.</p>
+
+      <div class="cols-2 anim-children" style="margin-top:22px; grid-template-columns: 1.4fr 0.6fr;">
+        <div class="panel strong">
+          <div class="card-title">Pro forma konsolidovaný P&amp;L <span class="muted" style="font-weight:400; font-size:13px;">(mil. Kč)</span></div>
+          <table style="margin-top:10px; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="min-width:200px; font-size:12px; padding:7px 6px;">Metrika</th>
+                <th style="text-align:right; font-size:12px; padding:7px 6px;">2025A</th>
+                <th style="text-align:right; font-size:12px; padding:7px 6px;">2026P</th>
+                <th style="text-align:right; font-size:12px; padding:7px 6px;">2027P</th>
+                <th style="text-align:right; font-size:12px; padding:7px 6px;">2028P</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:6px;">Organic Revenue (5 firem)</td><td style="text-align:right; padding:6px;">125</td><td style="text-align:right; padding:6px;">129</td><td style="text-align:right; padding:6px;">178</td><td style="text-align:right; padding:6px;">248</td></tr>
+              <tr><td style="padding:6px;">+ Anchor akvizice (od 2027)</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">220</td><td style="text-align:right; padding:6px;">245</td></tr>
+              <tr><td style="padding:6px;">+ Bolt-on (od 2027)</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">65</td><td style="text-align:right; padding:6px;">80</td></tr>
+              <tr style="background:rgba(125,211,252,.08);"><td style="padding:7px 6px;"><b>Pro forma Revenue</b></td><td style="text-align:right; padding:7px 6px;"><b>125</b></td><td style="text-align:right; padding:7px 6px;"><b>129</b></td><td style="text-align:right; padding:7px 6px;"><b>463</b></td><td style="text-align:right; padding:7px 6px;"><b>573</b></td></tr>
+              <tr><td style="padding:6px;">Organic EBITDA</td><td style="text-align:right; padding:6px; color:#fca5a5;">−3</td><td style="text-align:right; padding:6px;">4</td><td style="text-align:right; padding:6px;">15</td><td style="text-align:right; padding:6px;">25</td></tr>
+              <tr><td style="padding:6px;">+ Anchor EBITDA (margin push 5 → 7 %)</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">14</td><td style="text-align:right; padding:6px;">17</td></tr>
+              <tr><td style="padding:6px;">+ Bolt-on EBITDA</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">3,5</td><td style="text-align:right; padding:6px;">5</td></tr>
+              <tr><td style="padding:6px;">PropCo rental income (od 2027)</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">—</td><td style="text-align:right; padding:6px;">3</td><td style="text-align:right; padding:6px;">3,5</td></tr>
+              <tr style="background:rgba(134,239,172,.08);"><td style="padding:7px 6px;"><b class="green">Pro forma EBITDA</b></td><td style="text-align:right; padding:7px 6px;"><b style="color:#fca5a5;">−3</b></td><td style="text-align:right; padding:7px 6px;"><b class="green">4</b></td><td style="text-align:right; padding:7px 6px;"><b class="green">35,5</b></td><td style="text-align:right; padding:7px 6px;"><b class="green">50,5</b></td></tr>
+              <tr><td style="padding:6px; font-style:italic; color:var(--muted);">Pro forma EBITDA margin</td><td style="text-align:right; padding:6px; font-style:italic; color:var(--muted);">—</td><td style="text-align:right; padding:6px; font-style:italic; color:var(--muted);">3,1 %</td><td style="text-align:right; padding:6px; font-style:italic; color:var(--muted);">7,7 %</td><td style="text-align:right; padding:6px; font-style:italic; color:var(--muted);">8,8 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="card-title">Revaluace 2028/2029</div>
+          <table style="margin-top:10px; font-size:13px;">
+            <tbody>
+              <tr><td style="padding:7px 6px;">2029E EBITDA (forward)</td><td style="text-align:right; padding:7px 6px;"><b>~58 mil.</b></td></tr>
+              <tr><td style="padding:7px 6px;">× Exit multiple (proven playbook)</td><td style="text-align:right; padding:7px 6px;"><b>8×</b></td></tr>
+              <tr style="background:rgba(125,211,252,.08);"><td style="padding:7px 6px;"><b>OpCo equity value</b></td><td style="text-align:right; padding:7px 6px;"><b>~465 mil.</b></td></tr>
+              <tr><td style="padding:7px 6px;">+ PropCo (včetně apreciace)</td><td style="text-align:right; padding:7px 6px;">+55 mil.</td></tr>
+              <tr><td style="padding:7px 6px;">− Net bank debt</td><td style="text-align:right; padding:7px 6px; color:#fca5a5;">−42 mil.</td></tr>
+              <tr><td style="padding:7px 6px;">− Earn-out zbytek</td><td style="text-align:right; padding:7px 6px; color:#fca5a5;">−7 mil.</td></tr>
+              <tr style="background:rgba(134,239,172,.08);"><td style="padding:8px 6px;"><b class="green">Pre-money valuace</b></td><td style="text-align:right; padding:8px 6px;"><b class="green">~470 mil. Kč</b></td></tr>
+            </tbody>
+          </table>
+          <div class="panel" style="margin-top:14px; padding:12px 14px; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.18);">
+            <p style="margin:0; font-size:14px; line-height:1.5; color:#fff;"><b style="color:#7dd3fc;">Company value step-up:</b><br>195 mil. Kč (2026 post-money) → 470 mil. Kč (2028/2029 pre-money) = <b>~2,4×</b> · <b>~35–42 % IRR p.a.</b></p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>11.</b> <span>Scénáře Fáze 2</span></div>
+        </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">11</div></div>
+      </div>
+      <h2 class="anim">Fáze 2: <span style="background:linear-gradient(90deg,#86efac,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;">lokální leader nebo CEE konsolidátor</span></h2>
+      <p class="subtitle anim">Fáze 2 možná ve dvou scénářích: <b>1)</b> dokončení lokální konsolidace a vybudování lokálního šampiona, <b>2)</b> lokální šampion + start CEE konsolidace.</p>
+
+      <div class="cols-2 anim-children" style="margin-top:20px; grid-template-columns: 1.5fr 1fr; align-items:start;">
+        <div class="panel strong">
+          <table style="font-size:12.5px;">
+            <thead>
+              <tr>
+                <th style="padding:6px;">Parametr</th>
+                <th style="text-align:right; padding:6px;">Local case · €4M</th>
+                <th style="text-align:right; padding:6px;">Expansion case · €10M</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:6px;">Pre-money valuace</td><td style="text-align:right; padding:6px;">470 mil. Kč</td><td style="text-align:right; padding:6px;">470 mil. Kč</td></tr>
+              <tr style="background:rgba(125,211,252,.08);"><td style="padding:6px;"><b>Fáze 2 raise</b></td><td style="text-align:right; padding:6px;"><b>~100 mil. Kč</b></td><td style="text-align:right; padding:6px;"><b>~250 mil. Kč</b></td></tr>
+
+              <tr><td colspan="3" style="padding:8px 6px 3px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#7dd3fc;">Build &amp; velikost</td></tr>
+              <tr><td style="padding:5px 6px;">Geografie</td><td style="text-align:right; padding:5px 6px;">ČR</td><td style="text-align:right; padding:5px 6px;">ČR + CEE</td></tr>
+              <tr><td style="padding:5px 6px;">Akvizice Fáze 2</td><td style="text-align:right; padding:5px 6px;">1 anchor + 3 bolt-on</td><td style="text-align:right; padding:5px 6px;">3 anchor + 5 bolt-on</td></tr>
+              <tr><td style="padding:5px 6px;">Portfolio (vč. Fáze 1)</td><td style="text-align:right; padding:5px 6px;">~8–9 firem</td><td style="text-align:right; padding:5px 6px;">~14–16 firem</td></tr>
+              <tr><td style="padding:5px 6px;">Revenue 2033</td><td style="text-align:right; padding:5px 6px;"><b>~1,0–1,2 mld</b></td><td style="text-align:right; padding:5px 6px;"><b>~1,5–1,8 mld</b></td></tr>
+              <tr><td style="padding:5px 6px;">EBITDA 2033 (9–11 %)</td><td style="text-align:right; padding:5px 6px;">~110 mil.</td><td style="text-align:right; padding:5px 6px;">~185 mil.</td></tr>
+
+              <tr><td colspan="3" style="padding:8px 6px 3px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#a78bfa;">Dilution po Fázi 2</td></tr>
+              <tr><td style="padding:5px 6px;">Nomiverse</td><td style="text-align:right; padding:5px 6px;"><b>50,7 %</b></td><td style="text-align:right; padding:5px 6px;"><b>40,1 %</b></td></tr>
+              <tr><td style="padding:5px 6px;">Anchor 1</td><td style="text-align:right; padding:5px 6px;">31,8 %</td><td style="text-align:right; padding:5px 6px;">25,1 %</td></tr>
+              <tr><td style="padding:5px 6px;">Fáze 2 investor</td><td style="text-align:right; padding:5px 6px;">17,5 %</td><td style="text-align:right; padding:5px 6px;">34,7 %</td></tr>
+
+              <tr><td colspan="3" style="padding:8px 6px 3px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#86efac;">Valuace &amp; zhodnocení @ 2033 (bez carry)</td></tr>
+              <tr><td style="padding:5px 6px;">Exit multiple</td><td style="text-align:right; padding:5px 6px;">~7,5–8×</td><td style="text-align:right; padding:5px 6px;">~8,5–9×</td></tr>
+              <tr style="background:rgba(134,239,172,.08);"><td style="padding:6px;"><b>Celková equity valuace</b></td><td style="text-align:right; padding:6px;"><b class="green">~0,9–1,1 mld</b></td><td style="text-align:right; padding:6px;"><b class="green">~1,6–1,9 mld</b></td></tr>
+              <tr><td style="padding:5px 6px;">Hodnota podílu Nomiverse</td><td style="text-align:right; padding:5px 6px;">~460–560 mil.</td><td style="text-align:right; padding:5px 6px;">~640–760 mil.</td></tr>
+              <tr><td style="padding:5px 6px;">Hodnota podílu Anchor 1</td><td style="text-align:right; padding:5px 6px;">~285–350 mil.</td><td style="text-align:right; padding:5px 6px;">~400–475 mil.</td></tr>
+              <tr style="background:rgba(134,239,172,.08);"><td style="padding:6px;"><b>MOIC Anchor 1</b> <span class="muted" style="font-size:10px;">(na €3M · 7 let)</span></td><td style="text-align:right; padding:6px;"><b class="green">3,8–4,7×</b></td><td style="text-align:right; padding:6px;"><b class="green">5,3–6,3×</b></td></tr>
+              <tr><td style="padding:5px 6px;">MOIC Fáze 2 investor <span class="muted" style="font-size:10px;">(~5 let)</span></td><td style="text-align:right; padding:5px 6px;">1,6–2,0×</td><td style="text-align:right; padding:5px 6px;">2,2–2,6×</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="panel" style="text-align:center; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.25);">
+            <div style="font-size:34px; font-weight:750; color:#7dd3fc; letter-spacing:-0.03em;">0,9–1,9 mld</div>
+            <div class="lbl" style="margin-top:4px;">Kč celková valuace Nomiverse @ 2033</div>
+          </div>
+          <div class="panel" style="text-align:center; background:rgba(134,239,172,.06); border-color:rgba(134,239,172,.25);">
+            <div style="font-size:34px; font-weight:750; color:#86efac; letter-spacing:-0.03em;">3,8–6,3×</div>
+            <div class="lbl" style="margin-top:4px;">MOIC Anchor 1 dle scénáře (na €3M, 7 let, bez carry)</div>
+          </div>
+          <div class="panel">
+            <div class="card-title" style="margin-bottom:10px;">Možnosti likvidity v roce 2033</div>
+            <div class="bullet" style="gap:8px;">
+              <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:12.5px; line-height:1.4;"><b>Exit strategickému hráči</b> – konsolidátor v retailu / automotive / leisure.</p></div>
+              <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:12.5px; line-height:1.4;"><b>Exit P/E fondu</b> – asset-backed platforma pro další buy-and-build.</p></div>
+              <div class="item"><div class="dot" style="margin-top:6px;"></div><p style="font-size:12.5px; line-height:1.4;"><b>Buy-out Anchor 1</b> – odkup podílu Nomiverse nebo novým investorem (kontinuita).</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">Modelový příklad. Předpoklady: pre-money Fáze 2 ~470 mil. Kč, entry 4× EBITDA / 80 % podíl / 50 % cash + 50 % earn-out, bank leverage na PropCo, organický růst ~5 % p.a., exit 2033 (forward EBITDA × multiple + PropCo − net debt).</div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="topbar-left"><a href="https://www.nomiverse.com" target="_blank" class="brand-logo" style="text-decoration:none;" aria-label="Nomiverse"><img src="nomiverse-white.png" alt="Nomiverse" style="height:41px; width:auto; display:block;"></a><div class="kicker"><b>12.</b> <span>Akviziční pipeline</span></div>
+        </div><div class="topbar-right"><span class="confidential">Strictly Confidential</span><div class="page">12</div></div>
+      </div>
+      <h2 class="anim">Pipeline Fáze 1: <span style="background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">1 anchor + 2 bolt-on akvizice<br>(2026–2027)</span></h2>
+      <p class="subtitle anim">Fáze 1 cílí na <b>1 anchor dealerství</b> (tržby 200–300 mil. Kč) a <b>2 bolt-on</b> servis/rental firmy (30–80 mil. Kč nebo i perspektivní menší) v ČR, plus <b>1–2 PropCo areály</b>. Pipeline je v různých fázích – od identifikace po screening.</p>
+
+      <div class="cols-2 anim-children" style="margin-top:26px;">
+        <div class="panel">
+          <div class="card-title">Typy targetů</div>
+          <div class="bullet" style="margin-top:14px;">
+            <div class="item"><div class="dot"></div><p><b>Anchor dealerství</b> (ČR, tržby 200–300 mil. Kč) – etablované firmy s OEM vazbami, zavedený servis, zákaznická báze. <b>1× ve Fázi 1.</b></p></div>
+            <div class="item"><div class="dot"></div><p><b>Bolt-on servis / rental</b> (ČR, tržby 30–80 mil. Kč nebo i perspektivní menší) – specializované firmy, často founder-owned, hledají nástupce / partnera pro další růst. <b>2× ve Fázi 1.</b></p></div>
+            <div class="item"><div class="dot"></div><p><b>PropCo areály</b> (ČR) – pobočkové nemovitosti k pronájmu OpCo, financováno bankou ~65 %. <b>1–2 ve Fázi 1.</b></p></div>
+          </div>
+          <div class="panel" style="margin-top:16px; padding:14px; background:rgba(134,239,172,.06);">
+            <p style="margin:0; font-size:14px; line-height:1.5; color:#dfe6ff;"><b class="green">Kompetitivní výhoda:</b> Jsme jediný hráč na trhu s existující infrastrukturou (Nomivans), marketplace (Campiri), community (Dokempu) a operations SW (Carivio). Targetům nabízíme víc než jen kapitál.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="card-title">Pipeline stav</div>
+          <div class="bars" style="margin-top:18px;">
+            <div class="bar anim-bar">
+              <div class="bar-top"><span><b>Identifikované targety</b></span><span style="color:#7dd3fc;">100+</span></div>
+              <div class="track"><div class="fill" style="width:100%;"></div></div>
+            </div>
+            <div class="bar anim-bar">
+              <div class="bar-top"><span><b>Screening</b></span><span style="color:#c4b5fd;">20–30</span></div>
+              <div class="track"><div class="fill" style="width:28%; background:linear-gradient(90deg, #a78bfa, #c4b5fd);"></div></div>
+            </div>
+            <div class="bar anim-bar">
+              <div class="bar-top"><span><b>Shortlist</b></span><span style="color:#86efac;">10</span></div>
+              <div class="track"><div class="fill good" style="width:12%;"></div></div>
+            </div>
+            <div class="bar anim-bar">
+              <div class="bar-top"><span><b>Akviziční cíl</b></span><span style="color:#fde68a;">1–3</span></div>
+              <div class="track"><div class="fill" style="width:4%; background:linear-gradient(90deg, #fbbf24, #fde68a);"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:22px;">
+            <div class="card-title" style="margin-bottom:10px;">Aktivní targety <span class="muted" style="font-weight:400; font-size:13px;">(anonymizováno, placeholder)</span></div>
+            <div class="stack" style="gap:8px; margin-top:8px;">
+              <div class="panel" style="padding:10px 13px; background:rgba(134,239,172,.06); border-color:rgba(134,239,172,.25);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:3px;">
+                  <h3 style="font-size:14px; margin:0; color:#86efac;">4× Target A — Anchor dealerství</h3>
+                  <span class="status-tag" style="font-size:11px; padding:4px 8px; border-color:rgba(134,239,172,.3); color:#86efac;">Screening</span>
+                </div>
+                <p class="small" style="margin:0; font-size:12.5px;">ČR · tržby 200–300 mil. Kč · OEM vazby, zavedený servis</p>
+              </div>
+              <div class="panel" style="padding:10px 13px; background:rgba(125,211,252,.06); border-color:rgba(125,211,252,.25);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:3px;">
+                  <h3 style="font-size:14px; margin:0; color:#7dd3fc;">Target B — Bolt-on servis &amp; rental</h3>
+                  <span class="status-tag" style="font-size:11px; padding:4px 8px; border-color:rgba(125,211,252,.3); color:#7dd3fc;">Screening</span>
+                </div>
+                <p class="small" style="margin:0; font-size:12.5px;">ČR · tržby ~10 mil. Kč · servis + rental · hledá partnera pro expanzi</p>
+              </div>
+              <div class="panel" style="padding:10px 13px; background:rgba(167,139,250,.06); border-color:rgba(167,139,250,.25);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:3px;">
+                  <h3 style="font-size:14px; margin:0; color:#c4b5fd;">Target C — Bolt-on servis, prodej &amp; rental</h3>
+                  <span class="status-tag" style="font-size:11px; padding:4px 8px; border-color:rgba(167,139,250,.3); color:#c4b5fd;">Screening</span>
+                </div>
+                <p class="small" style="margin:0; font-size:12.5px;">ČR · tržby 10–30 mil. Kč · servis + OEM vazby + rental · hledá partnera pro exit</p>
+              </div>
+              <div class="panel" style="padding:10px 13px; background:rgba(253,230,138,.06); border-color:rgba(253,230,138,.25);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:3px;">
+                  <h3 style="font-size:14px; margin:0; color:#fde68a;">Target D — Bolt-on prodej RV vybavení a doplňků</h3>
+                  <span class="status-tag" style="font-size:11px; padding:4px 8px; border-color:rgba(253,230,138,.3); color:#fde68a;">Screening</span>
+                </div>
+                <p class="small" style="margin:0; font-size:12.5px;">ČR · tržby 30–60 mil. Kč · hledá partnera pro expanzi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">Pipeline je průběžně aktualizován. Počty targetů a fáze dialogu se mění. Detailní informace o konkrétních targetech jsou k dispozici pod NDA.</div>
+    </section>
+ </div>
+
+  <script>
+    // Enable animations only when JS is available
+    document.body.classList.add('js-ready');
+
+    // Collect the inner divs of any progress bar(s) within (or being) the element
+    function progressDivs(el) {
+      var list = Array.prototype.slice.call(el.querySelectorAll('.progress-xl > div'));
+      if (el.classList.contains('progress-xl')) {
+        list = list.concat(Array.prototype.slice.call(el.children));
+      }
+      return list;
+    }
+
+    // Scroll-triggered animations
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // For bar fills, restore the stored width (must beat CSS width:0 !important)
+          if (e.target.classList.contains('anim-bar')) {
+            const fill = e.target.querySelector('.fill');
+            if (fill && fill.dataset.w) fill.style.setProperty('width', fill.dataset.w, 'important');
+          }
+          // For progress bars, restore the stored width(s)
+          if (e.target.classList.contains('anim-progress')) {
+            progressDivs(e.target).forEach(function (d) {
+              if (d.dataset.w) d.style.setProperty('width', d.dataset.w, 'important');
+            });
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.anim, .anim-children, .anim-scale, .anim-fade, .anim-bar, .anim-progress').forEach(el => {
+      // Store bar fill widths
+      if (el.classList.contains('anim-bar')) {
+        const fill = el.querySelector('.fill');
+        if (fill) fill.dataset.w = fill.style.width;
+      }
+      // Store progress bar widths
+      if (el.classList.contains('anim-progress')) {
+        progressDivs(el).forEach(function (d) { d.dataset.w = d.style.width; });
+      }
+      io.observe(el);
+    });
+  </script>
+
+</body>
+</html>
